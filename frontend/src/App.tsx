@@ -1,102 +1,32 @@
-import { useState } from "react";
-import { login, cadastro } from "./services/authService";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
+import Landing from "@/src/ui/pages/landing/landing";
+import Publayout from "@/layouts/publayout";
+import Login from "./ui/pages/login_and_signup/login";
+import Signup from "./ui/pages/login_and_signup/signup";
+import Applayout from "@/layouts/applayout";
+import Home from "./ui/pages/home/home";
 
 export default function App() {
-    const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [nome, setNome] = useState("");
-    const [cpf, setCpf] = useState("");
-
-    async function handleLogin() {
-        try {
-            const data = await login(username, password);
-            console.log("Login realizado:", data);
-        } catch (error) {
-            console.error("Erro no login:", error);
-        }
-    }
-
-    async function handleCadastro() {
-        try {
-            const data = await cadastro(
-                username,
-                email,
-                password,
-                nome,
-                cpf
-            );
-
-            console.log("Cadastro realizado:", data);
-        } catch (error) {
-            console.error("Erro no cadastro:", error);
-        }
-    }
-
     return (
-        <div>
-            <h2>Cadastro</h2>
+        <>
+            <BrowserRouter>
+                <Routes>
+                    <Route element={<Publayout />}>
+                        <Route path="/landing" element={<Landing />} />
+                        <Route path="/login" element={< Login />} />
+                        <Route path="/signup" element={<Signup />} />
+                    </Route>
 
-            <input
-                type="text"
-                placeholder="Usuário"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
+                    <Route element={<Applayout />}>
+                        <Route path="/home" element={<Home />}></Route>
+                    
+                    </Route>
+                    
+                </Routes>
 
-            <input
-                type="email"
-                placeholder="Email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-            />
 
-            <input
-                type="password"
-                placeholder="Senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-
-            <input
-                type="text"
-                placeholder="Nome"
-                value={nome}
-                onChange={(e) => setNome(e.target.value)}
-            />
-
-            <input
-                type="text"
-                placeholder="CPF"
-                value={cpf}
-                onChange={(e) => setCpf(e.target.value)}
-            />
-
-            <button onClick={handleCadastro}>
-                Cadastrar
-            </button>
-
-            <hr />
-
-            <h2>Login</h2>
-
-            <input
-                type="text"
-                placeholder="Usuário"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
-
-            <input
-                type="password"
-                placeholder="Senha"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
-
-            <button onClick={handleLogin}>
-                Entrar
-            </button>
-        </div>
-    );
+            </BrowserRouter>
+        </>
+    )
 }
